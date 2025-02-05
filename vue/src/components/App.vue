@@ -1,29 +1,22 @@
 <template>
-  <div class="alchimick-container">
-    <AlchimickComponent />
+  <div>
+    <RouterView />
+    <ModalContainer />
   </div>
 </template>
 
 <script>
-import AlchimickComponent from "@/components/alchimick/Alchimick.vue";
+import ModalContainer from "@/components/parts/ModalContainer";
 
 export default {
   components: {
-    AlchimickComponent
+    ModalContainer
   }
 }
 </script>
 
 <style lang="less">
 @import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;700&display=swap');
-
-.alchimick-container {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  max-width: 700px;
-  width: 100%
-}
 
 body {
   margin: 0;

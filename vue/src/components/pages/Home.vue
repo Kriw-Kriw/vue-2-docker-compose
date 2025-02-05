@@ -1,13 +1,10 @@
 <template>
-    <PageLayout>
-      <section class="p-16">
-        Homepage
-        <button @click="() => openHelpModal()">Open modal</button>
-      </section>
-      <section>
-        <GridLayout />
-      </section>
-    </PageLayout>
+  <PageLayout>
+    <section class="p-16">
+      Homepage
+      <button @click="() => openHelpModal()">Open modal</button>
+    </section>
+  </PageLayout>
 </template>
 
 <script>
