@@ -1,0 +1,146 @@
+.alchemist-game {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  max-width: 700px;
+  width: 100%;
+  font-family: Arial, sans-serif;
+  color: #333;
+
+  &__title {
+    margin: 0;
+    padding: 10px;
+    background-color: #444;
+    color: #fff;
+    text-align: center;
+    font-size: 1.2em;
+  }
+
+  &__inventory,
+  &__table {
+    padding: 10px;
+    margin: 10px;
+    border-radius: 8px;
+  }
+
+  &__inventory {
+    flex: 4;
+    background: linear-gradient(to right, #f5f5f5, #e0e0e0);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+  }
+
+  &__inventory-item {
+    background: #fff;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    &__name {
+      display: block;
+      font-weight: bold;
+    }
+
+    &__count {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      font-size: 0.9em;
+      background-color: #fff;
+      padding: 2px 5px;
+      border-radius: 5px;
+      color: #333;
+      border: 1px solid #ddd;
+    }
+
+    &__image {
+      width: 40%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  &__table {
+    flex: 2;
+    background: linear-gradient(to right, #eaeaea, #d4d4d4);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  &__table-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+  }
+
+  &__table-item {
+    background: #fff;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+    position: relative;
+
+    &__tittle {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  &__table-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+
+  &__button-content {
+    margin: 0;
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    line-height: 50%; 
+  }
+
+  &__button {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background: #888;
+    color: #fff;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: #555;
+    }
+
+    &__sett {
+      width: 20px;
+      height: 20px;
+      position: relative;
+    }
+  }
+
+  &__mix-message {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 1.1em;
+    color: #555;
+    font-weight: bold;
+  }
+}
