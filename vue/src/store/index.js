@@ -6,13 +6,13 @@ export default {
     coins: 500,
     selectedLocation: null,
     fishList: [
-      { id: "fishList1", name: "Карп", catchChance: 0.1, price: 70 },
-      { id: "fishList2", name: "Щука", catchChance: 0.05, price: 160 },
-      { id: "fishList3", name: "Лещ", catchChance: 0.3, price: 40 },
-      { id: "fishList4", name: "Травяная форель", catchChance: 0.05, price: 170 },
-      { id: "fishList5", name: "Тунец", catchChance: 0.1, price: 100 },
-      { id: "fishList6", name: "Скумбрия", catchChance: 0.2, price: 80 }
-    ],
+      { id: "fishList1", name: "Карп", catchChance: 0.1, price: 70, aggression: 1, jerkiness: 1, image: "https://w7.pngwing.com/pngs/332/606/png-transparent-mirror-carp-tilapia-northern-pike-fish-actinopterygii-cyprinus-carpio-seafood-fauna-tail.png" },
+      { id: "fishList2", name: "Щука", catchChance: 0.05, price: 160, aggression: 3, jerkiness: 3, image: "https://w7.pngwing.com/pngs/274/484/png-transparent-northern-pike-salmon-09777-perch-pikes-pike-bony-fish-09777-cod.png" },
+      { id: "fishList3", name: "Лещ", catchChance: 0.3, price: 40, aggression: 1, jerkiness: 1, image: "https://w7.pngwing.com/pngs/75/611/png-transparent-common-bream-fishing-angling-bifrost-animals-seafood-fauna-thumbnail.png" },
+      { id: "fishList4", name: "Травяная форель", catchChance: 0.05, price: 170, aggression: 2, jerkiness: 4, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzw39z6uH45XuweyQAtRjQfEi4C4gQlMOVAw&s" },
+      { id: "fishList5", name: "Тунец", catchChance: 0.1, price: 300, aggression: 4, jerkiness: 5, image: "https://e7.pngegg.com/pngimages/300/967/png-clipart-tuna-illustration-yellowfin-tuna-atlantic-bluefin-tuna-skipjack-tuna-fishing-fish-marine-mammal-food.png"  },
+      { id: "fishList6", name: "Скумбрия", catchChance: 0.2, price: 80, aggression: 2, jerkiness: 2, image: "https://e7.pngegg.com/pngimages/18/641/png-clipart-atlantic-mackerel-fish-indian-mackerel-food-fish-food-animals-thumbnail.png"  }
+    ],    
     locations: [
       { id: 1, name: "Река", fishIds: ["fishList1", "fishList2", "fishList3"], image: "https://media-1.gorbilet.com/f0/bd/79/36/c0/c3/shutterstock_1940798533_V7CjMZ0.jpg" },
       { id: 2, name: "Озеро", fishIds: ["fishList4", "fishList2"], image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyYSqJB7qSdsXWYhd37GnOTCGoovKIHvpd5Q&s" },
@@ -64,15 +64,6 @@ export default {
       state.selectedLocation = location;
     },
 
-    catchFish(state, fish) {
-      const existingFish = state.inventory.find(f => f.name === fish.name && f.type === "fish");
-      if (existingFish) {
-        existingFish.quantity += 1;
-      } else {
-        state.inventory.push({ ...fish, id: Date.now(), quantity: 1, type: "fish" });
-      }
-    },
-
     sellFish(state, fish) {
       const index = state.inventory.findIndex(f => f.name === fish.name);
       if (index !== -1) {
@@ -119,19 +110,32 @@ export default {
   
       const fish = fishType;
       const baseCatchChance = fish.catchChance;  // Основной шанс поимки рыбы
-      const rodBonus = rodPower * 0.005;  // Бонус от удочки
+      const rodBonus = rodPower * 0.05;  // Бонус от удочки
       const baitBonus = baitChance * 0.1;  // Бонус от наживки
   
       const finalCatchChance = baseCatchChance + rodBonus + baitBonus;
   
       const random = Math.random();
       if (random < finalCatchChance) {
-        commit("catchFish", { ...fish, id: Date.now() });
-        alert("Вы поймали " + fish.name);
+        alert("Рыба клюнула - " + fish.name);
+        commit("consumeBait", bait.id);
+
+        return fish
       } else {
-        alert("Рыба не клюнула");
+        alert("Рыба не клюкнула");
+        commit("consumeBait", bait.id);
+
+        return null
       }
-      commit("consumeBait", bait.id);
+    },
+
+    catchFish(state, fish) {
+      const existingFish = this.state.inventory.find(f => f.name === fish.name && f.type === "fish");
+      if (existingFish) {
+        existingFish.quantity += 1;
+      } else {
+        this.state.inventory.push({ ...fish, id: Date.now(), quantity: 1, type: "fish" });
+      }
     },
 
     sellFish({ commit }, fish) {
