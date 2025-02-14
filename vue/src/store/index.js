@@ -94,6 +94,15 @@ export default {
 
     decreaseBalance(state, amount) {
       state.coins -= amount;
+    },
+
+    catchFish(state, fish) {
+      const existingFish = state.inventory.find(f => f.name === fish.name && f.type === "fish");
+      if (existingFish) {
+        existingFish.quantity += 1;
+      } else {
+        state.inventory.push({ ...fish, id: Date.now(), quantity: 1, type: "fish" });
+      }
     }
   },
   actions: {
@@ -126,15 +135,6 @@ export default {
         commit("consumeBait", bait.id);
 
         return null
-      }
-    },
-
-    catchFish(state, fish) {
-      const existingFish = this.state.inventory.find(f => f.name === fish.name && f.type === "fish");
-      if (existingFish) {
-        existingFish.quantity += 1;
-      } else {
-        this.state.inventory.push({ ...fish, id: Date.now(), quantity: 1, type: "fish" });
       }
     },
 

@@ -16,16 +16,17 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from "vuex";
+
 export default {
   name: "LocationsPage",
   computed: {
-    availableLocations() {
-      return this.$store.getters.availableLocations;
-    },
+    ...mapGetters(["availableLocations"]),
   },
   methods: {
+    ...mapMutations(["setLocation"]),
     selectLocation(location) {
-      this.$store.commit("setLocation", location);
+      this.setLocation(location);
       this.$router.push("/fishing");
     },
   },

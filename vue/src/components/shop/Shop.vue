@@ -32,23 +32,15 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from "vuex";
+
 export default {
   name: "ShopPage",
   computed: {
-    coins() {
-      return this.$store.getters.coins;
-    },
-    rods() {
-      return this.$store.getters.rods;
-    },
-    baits() {
-      return this.$store.getters.baits;
-    }
+    ...mapGetters(["coins", "rods", "baits"]),
   },
   methods: {
-    buyItem(item) {
-      this.$store.commit("buyItem", item);
-    },
+    ...mapMutations(["buyItem"]),
   },
 };
 </script>

@@ -56,7 +56,7 @@
           <div class="fishing__line" 
           v-if="fish"
             :style="{ 
-              height: `${fishPosition}%`,
+              height: `${100 - fishPosition}%`,
               left:  `${fishPositionHor}%`, 
               transform: `translateX(-${fishPositionHor}%)`
             }">
@@ -83,7 +83,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 
 export default {
   name: "FishingPage",
@@ -120,7 +120,8 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["catchFishAsync", "catchFish"]),
+    ...mapActions(["catchFishAsync"]),
+    ...mapMutations(["catchFish"]),
 
     startFishing() {
       this.isFishing = true;
@@ -190,35 +191,28 @@ export default {
         : 0;
 
       this.tension = Math.max(0, Math.min(100, this.tension + this.tensionChangeRate + fishResistance + fishJerk));
-      this.fishPosition = Math.max(10, Math.min(90, this.fishPosition + (this.tension < 50 ? 2 : -2)));
 
-      if(this.bobberPosition < 20) {
-        this.fishPosition += 10
-      } else if (this.bobberPosition > 40) {
-        this.fishPosition -= 10
-      }
+      this.fishPosition = Math.max(10, Math.min(90, this.fishPosition + (this.tension < 50 ? -2 : 2)));
 
       let maxHorizontalShift = 40 + this.fish.jerkiness * 3;
       let targetHor = Math.max(5, Math.min(95, this.fishPositionHor + Math.floor(Math.random() * maxHorizontalShift) - (maxHorizontalShift / 2)));
       
       this.fishPositionHor += (targetHor - this.fishPositionHor) * (0.1 + this.fish.jerkiness * 0.02);
 
-      if (this.tension >= 100 || this.fishPosition >= 90) {
-        clearInterval(this.gameLoop);
-        this.isFishing = false;
-        alert("Рыба сорвалась!");
-      } else if (this.fishPosition <= 10) {
+      if (this.fishPosition >= 90) { 
         clearInterval(this.gameLoop);
         this.isFishing = false;
         this.catchFish({ ...this.fish, id: Date.now() });
         alert("Вы поймали рыбу!");
+      } else if (this.tension >= 100 || this.fishPosition <= 10) { 
+        clearInterval(this.gameLoop);
+        this.isFishing = false;
+        alert("Рыба сорвалась!");
       }
     },
-
     startIncreasingTension() {
       this.tensionChangeRate = 3;
     },
-
     stopIncreasingTension() {
       this.tensionChangeRate = -2;
     },
@@ -226,9 +220,7 @@ export default {
 };
 </script>
 
-
 <style lang="less" scoped>
-
 @keyframes bobberFloat {
   0% { transform: translate(-50%, -50%) translateY(0); }
   50% { transform: translate(-50%, -50%) translateY(5px); }
@@ -367,11 +359,11 @@ export default {
   &__line {
     position: absolute;
     width: 2px;
-    left: 50%;
     background: white;
-    transform-origin: top center;
-    transition:.2s;
-    top: 0;
+    transform-origin: bottom center;
+    transition: 0.2s;
+    bottom: 0;
+    left: 50%;
   }
 
   &__tension {
